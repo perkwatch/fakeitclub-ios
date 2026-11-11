@@ -1,0 +1,19 @@
+{
+	"android": {
+		"allowMixedContent": false
+	},
+	"appId": "com.buckthem.fakeitclub",
+	"appName": "Fake It Club",
+	"backgroundColor": "#12081f",
+	"ios": {
+		"backgroundColor": "#12081f",
+		"contentInset": "always",
+		"preferredContentMode": "mobile"
+	},
+	"server": {
+		"androidScheme": "https",
+		"cleartext": false
+	},
+	"webDir": "www",
+	"packageClassList": []
+}

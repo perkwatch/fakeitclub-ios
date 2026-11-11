@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#12081f">
+<title>Fake It Club</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- ============ HUB / CLUBHOUSE ============ -->
+  <section id="screen-hub" class="screen active">
+    <header class="hub-head">
+      <div class="logo-badge">🎭</div>
+      <div>
+        <h1>Fake It Club</h1>
+        <p class="tagline">Some of your clubmates are faking it.</p>
+      </div>
+    </header>
+
+    <div class="clubhouse-scene" id="clubhouse-scene" aria-label="Your clubhouse">
+      <div class="scene-sign">THE CLUBHOUSE</div>
+      <div class="scene-decor" id="scene-decor"></div>
+      <div class="scene-you" id="scene-you"></div>
+    </div>
+
+    <div class="profile-card">
+      <div class="avatar" id="hub-avatar"></div>
+      <div class="profile-meta">
+        <div class="profile-name" id="hub-name">Newcomer</div>
+        <div class="profile-level" id="hub-level">Level 1</div>
+        <div class="xpbar"><div class="xpfill" id="hub-xpfill"></div></div>
+        <div class="profile-xp" id="hub-xp">0 XP</div>
+      </div>
+      <div class="coin-box">🪙<span id="hub-coins">0</span></div>
+    </div>
+
+    <button class="btn btn-hero" id="btn-play">▶&nbsp; Play a Round</button>
+    <div class="hub-grid">
+      <button class="btn btn-card" id="btn-studio">🎬<span>Scenario Studio</span></button>
+      <button class="btn btn-card" id="btn-closet">🧢<span>Closet &amp; Decor</span></button>
+      <button class="btn btn-card" id="btn-stats">📊<span>Club Record</span></button>
+      <button class="btn btn-card" id="btn-howto">❓<span>How to Play</span></button>
+    </div>
+    <button class="btn btn-ghost" id="btn-settings">⚙️ Settings</button>
+    <footer class="legal">© 2026 BuckThem. All rights reserved.<br>Fake It Club. Created November 9, 2026.</footer>
+  </section>
+
+  <!-- ============ LOBBY SETUP ============ -->
+  <section id="screen-lobby" class="screen">
+    <header class="sub-head"><button class="btn btn-back" data-nav="hub">‹ Back</button><h2>Set Up the Round</h2></header>
+
+    <label class="field-label">Scenario</label>
+    <div class="chip-row" id="scenario-chips"></div>
+    <p class="scenario-desc" id="scenario-desc"></p>
+
+    <label class="field-label">Clubmates at the table: <b id="seats-out">7</b></label>
+    <input type="range" id="seats-range" min="4" max="10" value="7" step="1">
+    <p class="hint" id="faker-hint"></p>
+
+    <label class="field-label">Who's playing on this device?</label>
+    <p class="hint">Add at least one person. Bots fill every empty seat — you can even play solo.</p>
+    <div id="human-list"></div>
+    <div class="add-row">
+      <input type="text" id="human-name" maxlength="14" placeholder="Name (e.g. Alex)">
+      <button class="btn btn-small" id="btn-add-human">Add</button>
+    </div>
+
+    <button class="btn btn-hero" id="btn-deal">Deal the Roles 🎭</button>
+    <p class="hint center">Roles are secret. The device gets passed around — no peeking!</p>
+  </section>
+
+  <!-- ============ PASS GATE ============ -->
+  <section id="screen-pass" class="screen">
+    <div class="pass-wrap">
+      <div class="pass-emoji" id="pass-emoji">📱</div>
+      <h2 id="pass-title">Pass the device</h2>
+      <p id="pass-text">Hand it over.</p>
+      <button class="btn btn-hero" id="btn-pass-ok">I'm ready</button>
+    </div>
+  </section>
+
+  <!-- ============ ROLE REVEAL ============ -->
+  <section id="screen-reveal" class="screen">
+    <div class="reveal-wrap">
+      <p class="reveal-for" id="reveal-for"></p>
+      <div class="reveal-card" id="reveal-card">
+        <div class="reveal-emoji" id="reveal-emoji">🎭</div>
+        <div class="reveal-role" id="reveal-role"></div>
+        <p class="reveal-desc" id="reveal-desc"></p>
+        <p class="reveal-team" id="reveal-team"></p>
+      </div>
+      <button class="btn btn-hero" id="btn-reveal-ok">Got it — hide my role</button>
+    </div>
+  </section>
+
+  <!-- ============ GAME ============ -->
+  <section id="screen-game" class="screen">
+    <div class="game-top">
+      <div class="taskbar-wrap">
+        <div class="taskbar-label" id="taskbar-label">Club tasks</div>
+        <div class="taskbar"><div class="taskfill" id="taskfill"></div></div>
+      </div>
+      <div class="crisis-banner hidden" id="crisis-banner"></div>
+    </div>
+    <div class="turn-banner" id="turn-banner"></div>
+    <div class="map" id="map"></div>
+    <div class="ticker" id="ticker"></div>
+    <div class="action-panel" id="action-panel"></div>
+  </section>
+
+  <!-- ============ TASK MINI-GAME ============ -->
+  <section id="screen-task" class="screen">
+    <header class="sub-head"><h2 id="task-title">Task</h2></header>
+    <p class="task-flavor" id="task-flavor"></p>
+    <div class="task-stage" id="task-stage"></div>
+    <button class="btn btn-ghost" id="btn-task-quit">Step away (uses your action)</button>
+  </section>
+
+  <!-- ============ MEETING ============ -->
+  <section id="screen-meeting" class="screen">
+    <header class="sub-head"><h2>🚨 Club Meeting</h2></header>
+    <p class="meeting-why" id="meeting-why"></p>
+    <h3 class="case-head">The case file — what the club knows</h3>
+    <div class="case-file" id="case-file"></div>
+    <div class="meeting-stage" id="meeting-stage"></div>
+  </section>
+
+  <!-- ============ ROUND END ============ -->
+  <section id="screen-end" class="screen">
+    <div class="end-wrap">
+      <div class="end-emoji" id="end-emoji">🏆</div>
+      <h2 id="end-title"></h2>
+      <p id="end-sub"></p>
+      <div class="end-roles" id="end-roles"></div>
+      <div class="end-rewards" id="end-rewards"></div>
+      <button class="btn btn-hero" id="btn-again">Play Again</button>
+      <button class="btn btn-ghost" id="btn-tohub">Back to the Clubhouse</button>
+    </div>
+  </section>
+
+  <!-- ============ STUDIO ============ -->
+  <section id="screen-studio" class="screen">
+    <header class="sub-head"><button class="btn btn-back" data-nav="hub">‹ Back</button><h2>Scenario Studio</h2></header>
+    <p class="hint">Write your own version of the night: name the sides, set how many fakers hide in the club, and tune the pressure. Saved scenarios show up in the lobby.</p>
+    <div id="studio-list"></div>
+    <h3 class="case-head">New scenario</h3>
+    <label class="field-label">Scenario name</label>
+    <input type="text" id="st-name" maxlength="28" placeholder="e.g. Prom Night Panic">
+    <label class="field-label">The honest side is called…</label>
+    <input type="text" id="st-members" maxlength="18" placeholder="e.g. Prom Committee">
+    <label class="field-label">The fakers are called…</label>
+    <input type="text" id="st-fakers" maxlength="18" placeholder="e.g. Crashers">
+    <label class="field-label">Fakers in a full club: <b id="st-fakers-out">2</b></label>
+    <input type="range" id="st-fakers-range" min="1" max="4" value="2" step="1">
+    <label class="field-label">Workload (tasks to win): <b id="st-tasks-out">Normal</b></label>
+    <input type="range" id="st-tasks-range" min="1" max="3" value="2" step="1">
+    <label class="field-label">Crisis countdown (turns): <b id="st-crisis-out">10</b></label>
+    <input type="range" id="st-crisis-range" min="6" max="16" value="10" step="1">
+    <label class="check-row"><input type="checkbox" id="st-confirm" checked> Reveal a player's side when they're voted out</label>
+    <label class="field-label">Opening line (flavor text)</label>
+    <input type="text" id="st-flavor" maxlength="90" placeholder="e.g. Someone's here to ruin the prom…">
+    <button class="btn btn-hero" id="btn-save-scenario">Save Scenario</button>
+  </section>
+
+  <!-- ============ CLOSET ============ -->
+  <section id="screen-closet" class="screen">
+    <header class="sub-head"><button class="btn btn-back" data-nav="hub">‹ Back</button><h2>Closet &amp; Decor</h2></header>
+    <div class="closet-preview"><div class="avatar big" id="closet-avatar"></div><div class="coin-box">🪙<span id="closet-coins">0</span></div></div>
+    <p class="hint">Everything here is earned by playing — Club Coins only, never real money.</p>
+    <h3 class="case-head">Colors</h3>
+    <div class="shop-grid" id="shop-colors"></div>
+    <h3 class="case-head">Hats</h3>
+    <div class="shop-grid" id="shop-hats"></div>
+    <h3 class="case-head">Clubhouse decor</h3>
+    <div class="shop-grid" id="shop-decor"></div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section id="screen-stats" class="screen">
+    <header class="sub-head"><button class="btn btn-back" data-nav="hub">‹ Back</button><h2>Club Record</h2></header>
+    <div class="stat-grid" id="stat-grid"></div>
+    <button class="btn btn-ghost danger" id="btn-wipe">Erase everything (profile, coins, scenarios)</button>
+  </section>
+
+  <!-- ============ HOW TO ============ -->
+  <section id="screen-howto" class="screen">
+    <header class="sub-head"><button class="btn btn-back" data-nav="hub">‹ Back</button><h2>How to Play</h2></header>
+    <div class="howto">
+      <h3>🎭 The setup</h3>
+      <p>Everyone at the table is a clubmate — but a few are <b>Fakers</b>. Nobody knows who. One device gets passed around; your role stays secret.</p>
+      <h3>✅ The honest side</h3>
+      <p>On your turn, move around the clubhouse and finish club tasks. Fill the task bar to win — or figure out who the Fakers are and vote them out.</p>
+      <h3>🕶️ The Fakers</h3>
+      <p>Blend in. Pretend to do tasks. When you're alone with someone, <b>tag them out</b> — they become a Lounge ghost (ghosts can still finish tasks, so hurry). Trigger a <b>crisis</b> and run out the clock, or tag out enough clubmates that Fakers match the honest side — and the club is yours.</p>
+      <h3>🚨 Meetings</h3>
+      <p>Find a tagged-out clubmate and report it, or hit the emergency buzzer in the Lobby. Everyone reviews the case file — who was seen where, and when — then votes. Most votes is out. Choose carefully: vote out an honest clubmate and the Fakers are one step closer.</p>
+      <h3>🏠 Between rounds</h3>
+      <p>Earn XP and Club Coins, level up, dress your clubmate, decorate the clubhouse, and write your own scenarios in the Studio.</p>
+    </div>
+  </section>
+
+  <!-- ============ SETTINGS ============ -->
+  <section id="screen-settings" class="screen">
+    <header class="sub-head"><button class="btn btn-back" data-nav="hub">‹ Back</button><h2>Settings</h2></header>
+    <label class="field-label">Your clubmate name</label>
+    <input type="text" id="set-name" maxlength="14">
+    <label class="check-row"><input type="checkbox" id="set-sound"> Sound effects</label>
+    <label class="check-row"><input type="checkbox" id="set-chatter"> Bot table-talk in meetings</label>
+    <button class="btn btn-hero" id="btn-save-settings">Save</button>
+  </section>
+
+  <div class="toast hidden" id="toast"></div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
